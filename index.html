@@ -1,0 +1,61 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>简单的二维码生成器</title>
+	<link rel="stylesheet" href="seacher.css">
+
+	<style type="text/css">
+	.demo p{line-height:30px}
+	#code{margin-top:10px}
+	</style>
+	<script type="text/javascript" src="jquery-1.9.1.js"></script>
+	<script type="text/javascript" src="jquery.qrcode.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var str = "http://www.ljc520.com";
+	$('#code').qrcode(str);
+	
+	$("#sub_btn").click(function(){
+		$("#code").empty();
+		var str = toUtf8($("#mytxt").val());
+		
+		$("#code").qrcode({
+			render: "table",
+			width: 200,
+			height:200,
+			text: str
+		});
+	});
+})
+function toUtf8(str) {   
+    var out, i, len, c;   
+    out = "";   
+    len = str.length;   
+    for(i = 0; i < len; i++) {   
+    	c = str.charCodeAt(i);   
+    	if ((c >= 0x0001) && (c <= 0x007F)) {   
+        	out += str.charAt(i);   
+    	} else if (c > 0x07FF) {   
+        	out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));   
+        	out += String.fromCharCode(0x80 | ((c >>  6) & 0x3F));   
+        	out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));   
+    	} else {   
+        	out += String.fromCharCode(0xC0 | ((c >>  6) & 0x1F));   
+        	out += String.fromCharCode(0x80 | ((c >>  0) & 0x3F));   
+    	}   
+    }   
+    return out;   
+}  
+</script>
+</head>
+
+<body>
+<div align="center">
+	<div style="margin:50px;"><h1>简单的二维码生成器</h1></div>
+	<div id="code"></div>
+	<div style=" margin-top: 50px;"><strong>请输入内容（若为链接前面加:http://）</strong></div>
+	<p><input type="text" class="input" id="mytxt" value="" style="height:40px;width: 380px;"> <button type="submit" name="search" id="sub_btn">生成</button></p>
+</div>
+</body>
+</html>
